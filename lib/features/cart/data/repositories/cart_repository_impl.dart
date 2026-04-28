@@ -25,7 +25,9 @@ class CartRepositoryImpl implements CartRepository {
     final key = _key(item.productId, item.size);
     final existing = _items[key];
     if (existing != null) {
-      _items[key] = existing.copyWith(quantity: existing.quantity + item.quantity);
+      _items[key] = existing.copyWith(
+        quantity: existing.quantity + item.quantity,
+      );
       return;
     }
     _items[key] = item;

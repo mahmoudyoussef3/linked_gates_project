@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:linked_gates_project/core/widgets/functions.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../app_router.dart';
@@ -38,7 +38,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
       canPop: false,
       onPopInvokedWithResult: (didPop, result) {
         if (!didPop) {
-          _handleExitAttempt(context);
+          handleExitAttempt(context);
         }
       },
       child: Scaffold(
@@ -156,7 +156,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
     );
   }
 
-  void _handleExitAttempt(BuildContext context) {
+  void handleExitAttempt(BuildContext context) {
     final now = DateTime.now();
     final shouldExit =
         _lastBackPressedAt != null &&
@@ -169,14 +169,6 @@ class _ProductListScreenState extends State<ProductListScreen> {
 
     _lastBackPressedAt = now;
 
-    Fluttertoast.cancel();
-    Fluttertoast.showToast(
-      msg: 'Press back again to exit',
-      toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.BOTTOM,
-      backgroundColor: Colors.black87,
-      textColor: Colors.white,
-      fontSize: 14.sp,
-    );
+    showToast(message: 'Press back again to exit');
   }
 }

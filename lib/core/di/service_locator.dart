@@ -8,10 +8,8 @@ import '../../features/cart/domain/use_cases/get_cart_items_usecase.dart';
 import '../../features/cart/domain/use_cases/get_cart_totals_usecase.dart';
 import '../../features/cart/domain/use_cases/manage_cart_item_quantity_usecase.dart';
 import '../../features/cart/domain/use_cases/remove_cart_item_usecase.dart';
-import '../../features/products/data/data_sources/product_local_data_source.dart';
 import '../../features/products/data/data_sources/product_api_service.dart';
 import '../../features/products/data/data_sources/product_remote_data_source.dart';
-import '../../features/products/data/data_sources/product_remote_data_source_impl.dart';
 import '../../features/products/data/repositories/product_repository_impl.dart';
 import '../../features/products/domain/repositories/product_repository.dart';
 import '../../features/products/domain/use_cases/get_products_usecase.dart';
@@ -19,9 +17,8 @@ import '../network/dio_client.dart';
 
 final GetIt getIt = GetIt.instance;
 Future<void> setupLocator() async {
+
   // Data sources
-
-
   getIt.registerLazySingleton<ProductApiService>(
     () => ProductApiService(DioFactory.getDio()),
   );
