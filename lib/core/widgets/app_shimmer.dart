@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../styles/app_colors.dart';
@@ -23,12 +24,12 @@ class AppShimmerBox extends StatelessWidget {
     super.key,
     required this.height,
     this.width = double.infinity,
-    this.borderRadius = const BorderRadius.all(Radius.circular(8)),
+    this.borderRadius,
   });
 
   final double height;
   final double width;
-  final BorderRadius borderRadius;
+  final BorderRadius? borderRadius;
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +38,7 @@ class AppShimmerBox extends StatelessWidget {
       width: width,
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: borderRadius,
+        borderRadius: borderRadius ?? BorderRadius.circular(8.r),
       ),
     );
   }

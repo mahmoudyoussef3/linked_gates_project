@@ -12,6 +12,8 @@ enum ProductStatus { initial, loading, success, error }
 
 enum ProductLayout { grid, list }
 
+enum ProductSize { s, m, l }
+
 class ProductProvider extends ChangeNotifier {
   ProductProvider(this._getProductsUseCase);
 
@@ -24,6 +26,7 @@ class ProductProvider extends ChangeNotifier {
   final Map<int, int> _quantities = <int, int>{};
   final Map<int, double> _displayPrices = <int, double>{};
   final Map<int, String> _descriptions = <int, String>{};
+  final Map<int, ProductSize> _sizes = <int, ProductSize>{};
   ProductLayout _layout = ProductLayout.grid;
 
   ProductStatus get status => _status;
@@ -79,6 +82,25 @@ class ProductProvider extends ChangeNotifier {
 
   int getQuantity(int productId) => _quantities[productId] ?? 1;
 
+  ProductSize getSelectedSize(int productId) =>
+      _sizes[productId] ?? ProductSize.m;
+
+  void setSelectedSize(int productId, ProductSize size) {
+    _sizes[productId] = size;
+    notifyListeners();
+  }
+
+  String sizeLabel(ProductSize size) {
+    switch (size) {
+      case ProductSize.s:
+        return 'S';
+      case ProductSize.m:
+        return 'M';
+      case ProductSize.l:
+        return 'L';
+    }
+  }
+
   void incrementQuantity(int productId) {
     _quantities[productId] = getQuantity(productId) + 1;
     notifyListeners();
@@ -128,6 +150,7 @@ class ProductProvider extends ChangeNotifier {
   void _warmPresentationData() {
     for (final product in _products) {
       _quantities.putIfAbsent(product.id, () => 1);
+      _sizes.putIfAbsent(product.id, () => ProductSize.m);
       _displayPrices.putIfAbsent(
         product.id,
         () => FakeDataHelper.resolvePrice(

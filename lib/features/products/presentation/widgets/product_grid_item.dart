@@ -6,8 +6,8 @@ import '../../../../core/styles/app_text_styles.dart';
 import '../../../../core/widgets/app_network_image.dart';
 import '../../domain/entities/product_entity.dart';
 
-class ProductItem extends StatefulWidget {
-  const ProductItem({
+class ProductGridItem extends StatefulWidget {
+  const ProductGridItem({
     super.key,
     required this.product,
     required this.isFavorite,
@@ -27,10 +27,10 @@ class ProductItem extends StatefulWidget {
   final bool animate;
 
   @override
-  State<ProductItem> createState() => _ProductItemState();
+  State<ProductGridItem> createState() => _ProductGridItemState();
 }
 
-class _ProductItemState extends State<ProductItem>
+class _ProductGridItemState extends State<ProductGridItem>
     with SingleTickerProviderStateMixin {
   late final AnimationController _controller;
   late final Animation<double> _fade;
@@ -68,7 +68,7 @@ class _ProductItemState extends State<ProductItem>
   }
 
   @override
-  void didUpdateWidget(covariant ProductItem oldWidget) {
+  void didUpdateWidget(covariant ProductGridItem oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.animate && _controller.status == AnimationStatus.dismissed) {
       _controller.forward();
@@ -93,7 +93,7 @@ class _ProductItemState extends State<ProductItem>
             child: Material(
               color: AppColors.surface,
               elevation: 3,
-              shadowColor: Colors.black.withOpacity(0.08),
+              shadowColor: Colors.black.withValues(alpha: 0.08),
               borderRadius: BorderRadius.circular(16.r),
               child: InkWell(
                 onTap: widget.onTap,
@@ -115,7 +115,7 @@ class _ProductItemState extends State<ProductItem>
                               Positioned(
                                 top: 10.h,
                                 right: 10.w,
-                                child: _FavoriteButton(
+                                child: FavoriteButton(
                                   isFavorite: widget.isFavorite,
                                   onTap: widget.onFavoriteTap,
                                 ),
@@ -142,7 +142,7 @@ class _ProductItemState extends State<ProductItem>
                           vertical: 6.h,
                         ),
                         decoration: BoxDecoration(
-                          color: AppColors.primary.withOpacity(0.08),
+                          color: AppColors.primary.withValues(alpha: 0.08),
                           borderRadius: BorderRadius.circular(999.r),
                         ),
                         child: Text(
@@ -163,8 +163,8 @@ class _ProductItemState extends State<ProductItem>
   }
 }
 
-class _FavoriteButton extends StatelessWidget {
-  const _FavoriteButton({required this.isFavorite, required this.onTap});
+class FavoriteButton extends StatelessWidget {
+  const FavoriteButton({super.key, required this.isFavorite, this.onTap});
 
   final bool isFavorite;
   final VoidCallback? onTap;
@@ -173,7 +173,7 @@ class _FavoriteButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = isFavorite ? AppColors.error : Colors.white;
     return Material(
-      color: Colors.black.withOpacity(0.25),
+      color: Colors.black.withValues(alpha: 0.25),
       shape: const CircleBorder(),
       child: InkWell(
         onTap: onTap,

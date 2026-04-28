@@ -13,6 +13,7 @@ import 'package:provider/provider.dart';
 import 'package:linked_gates_project/features/products/domain/entities/product_entity.dart';
 import 'package:linked_gates_project/features/products/domain/repositories/product_repository.dart';
 import 'package:linked_gates_project/features/products/domain/use_cases/get_products_usecase.dart';
+import 'package:linked_gates_project/features/products/presentation/provider/cart_provider.dart';
 import 'package:linked_gates_project/features/products/presentation/provider/product_provider.dart';
 import 'package:linked_gates_project/features/products/presentation/screens/product_list_screen.dart';
 
@@ -37,8 +38,11 @@ void main() {
         designSize: const Size(375, 812),
         minTextAdapt: true,
         splitScreenMode: true,
-        builder: (_, __) => ChangeNotifierProvider(
-          create: (_) => ProductProvider(useCase),
+        builder: (_, __) => MultiProvider(
+          providers: [
+            ChangeNotifierProvider(create: (_) => ProductProvider(useCase)),
+            ChangeNotifierProvider(create: (_) => CartProvider()),
+          ],
           child: const MaterialApp(home: ProductListScreen()),
         ),
       ),

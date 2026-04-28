@@ -42,7 +42,9 @@ class AppNetworkImage extends StatelessWidget {
           imageUrl: url,
           fit: fit,
           memCacheWidth: cacheWidth > 0 ? cacheWidth : null,
-          fadeInDuration: const Duration(milliseconds: 150),
+          fadeInDuration: const Duration(milliseconds: 250),
+          fadeInCurve: Curves.easeOut,
+          fadeOutDuration: const Duration(milliseconds: 100),
           placeholder: (_, __) => const Center(
             child: CircularProgressIndicator(strokeWidth: 2),
           ),
