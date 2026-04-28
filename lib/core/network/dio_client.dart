@@ -1,34 +1,23 @@
 import 'package:dio/dio.dart';
-import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
-class DioFactory {
-  DioFactory._();
+import '../utils/constants.dart';
 
-  static Dio? dio;
-
-  static Dio getDio() {
-    Duration timeOut = const Duration(seconds: 30);
-
-    if (dio == null) {
-      dio = Dio();
-      dio!
-        ..options.connectTimeout = timeOut
-        ..options.receiveTimeout = timeOut;
-      addDioInterceptor();
-      return dio!;
-    } else {
-      return dio!;
-    }
-  }
-
-  static void addDioInterceptor() {
-
-    dio?.interceptors.add(
-      PrettyDioLogger(
-        requestBody: true,
-        requestHeader: true,
-        responseHeader: true,
-      ),
+class DioClient {
+  DioClient()
+    : _dio = Dio(
+        BaseOptions(
+          baseUrl: AppConstants.baseUrl,
+          connectTimeout: AppConstants.connectTimeout,
+          receiveTimeout: AppConstants.receiveTimeout,
+          responseType: ResponseType.json,
+        ),
+      ) {
+    _dio.interceptors.add(
+      LogInterceptor(requestBody: true, responseBody: true),
     );
   }
+
+  final Dio _dio;
+
+  Dio get dio => _dio;
 }

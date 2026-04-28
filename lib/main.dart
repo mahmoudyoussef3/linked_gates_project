@@ -12,7 +12,7 @@ Future<void> main() async {
   await setupLocator();
   runApp(
     DevicePreview(
-      enabled: !kReleaseMode,
+      enabled: kReleaseMode,
       builder: (_) => MyApp(appRouter: getIt<AppRouter>()),
     ),
   );
