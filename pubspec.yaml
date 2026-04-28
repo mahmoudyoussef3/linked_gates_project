@@ -61,9 +61,16 @@ dev_dependencies:
   json_serializable: ^6.13.1
   retrofit_generator: ^10.2.5
   flutter_native_splash: ^2.4.7
+  flutter_launcher_icons: ^0.14.4
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: assets/images/splash_icon.png
+  remove_alpha_ios: true
 
 # The following section is specific to Flutter packages.
 flutter:
