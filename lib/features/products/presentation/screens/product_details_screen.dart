@@ -6,6 +6,7 @@ import '../../../../app_router.dart';
 import '../../../../core/styles/app_colors.dart';
 import '../../../../core/styles/app_text_styles.dart';
 import '../../../../core/widgets/app_network_image.dart';
+import '../../../../core/widgets/app_snackbar.dart';
 import '../provider/cart_provider.dart';
 import '../provider/product_provider.dart';
 import '../../domain/entities/product_entity.dart';
@@ -51,7 +52,13 @@ class _ProductDetailScreenState extends State<ProductDetailScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Product Details')),
+      appBar: AppBar(
+        title: const Text('Product Details'),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios_new_rounded),
+          onPressed: () => _handleBack(context),
+        ),
+      ),
       body: Consumer2<ProductProvider, CartProvider>(
         builder: (context, provider, cart, _) {
           final priceText = provider.getFormattedPrice(widget.product);
@@ -83,6 +90,15 @@ class _ProductDetailScreenState extends State<ProductDetailScreen>
                     Text(priceText, style: AppTextStyles.priceLarge),
                     SizedBox(width: 8.w),
                     Text('per item', style: AppTextStyles.caption),
+                    const Spacer(),
+                    _InlineQuantityCounter(
+                      quantity: quantity,
+                      onDecrease: quantity > 1
+                          ? () => provider.decrementQuantity(widget.product.id)
+                          : null,
+                      onIncrease: () =>
+                          provider.incrementQuantity(widget.product.id),
+                    ),
                   ],
                 ),
                 SizedBox(height: 16.h),
@@ -104,42 +120,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen>
                 SizedBox(height: 20.h),
                 const _SectionDivider(),
                 SizedBox(height: 12.h),
-                Container(
-                  padding: EdgeInsets.all(14.w),
-                  decoration: BoxDecoration(
-                    color: AppColors.surface,
-                    borderRadius: BorderRadius.circular(16.r),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withValues(alpha: 0.06),
-                        blurRadius: 12,
-                        offset: const Offset(0, 6),
-                      ),
-                    ],
-                  ),
-                  child: Row(
-                    children: [
-                      Text('Quantity', style: AppTextStyles.subtitle),
-                      const Spacer(),
-                      _QuantityButton(
-                        icon: Icons.remove,
-                        onTap: quantity > 1
-                            ? () =>
-                                  provider.decrementQuantity(widget.product.id)
-                            : null,
-                      ),
-                      SizedBox(width: 12.w),
-                      Text(quantity.toString(), style: AppTextStyles.title),
-                      SizedBox(width: 12.w),
-                      _QuantityButton(
-                        icon: Icons.add,
-                        onTap: () =>
-                            provider.incrementQuantity(widget.product.id),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(height: 24.h),
+                SizedBox(height: 20.h),
                 Row(
                   children: [
                     Text('Total', style: AppTextStyles.subtitle),
@@ -155,13 +136,14 @@ class _ProductDetailScreenState extends State<ProductDetailScreen>
                     child: ElevatedButton(
                       onPressed: () async {
                         await _animateButton();
+                        if (!mounted) return;
                         cart.addItem(
                           product: widget.product,
                           price: provider.getDisplayPrice(widget.product),
                           size: selectedSize,
                           quantity: quantity,
                         );
-                        _showCartSnackBar(context);
+                        _showCartSnackBar(this.context);
                       },
                       child: const Text('Add to Cart'),
                     ),
@@ -173,6 +155,14 @@ class _ProductDetailScreenState extends State<ProductDetailScreen>
         },
       ),
     );
+  }
+
+  void _handleBack(BuildContext context) {
+    if (Navigator.of(context).canPop()) {
+      Navigator.of(context).pop();
+      return;
+    }
+    Navigator.of(context).pushReplacementNamed(AppRoutes.products);
   }
 }
 
@@ -198,6 +188,50 @@ class _QuantityButton extends StatelessWidget {
             color: onTap == null ? AppColors.muted : AppColors.textPrimary,
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _InlineQuantityCounter extends StatelessWidget {
+  const _InlineQuantityCounter({
+    required this.quantity,
+    required this.onDecrease,
+    required this.onIncrease,
+  });
+
+  final int quantity;
+  final VoidCallback? onDecrease;
+  final VoidCallback onIncrease;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 6.h),
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        borderRadius: BorderRadius.circular(14.r),
+        border: Border.all(color: AppColors.muted.withValues(alpha: 0.7)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.05),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          _QuantityButton(icon: Icons.remove, onTap: onDecrease),
+          SizedBox(width: 8.w),
+          Text(
+            quantity.toString(),
+            style: AppTextStyles.title.copyWith(fontWeight: FontWeight.w700),
+          ),
+          SizedBox(width: 8.w),
+          _QuantityButton(icon: Icons.add, onTap: onIncrease),
+        ],
       ),
     );
   }
@@ -265,25 +299,17 @@ class _SizeSelector extends StatelessWidget {
 }
 
 void _showCartSnackBar(BuildContext context) {
-  final messenger = ScaffoldMessenger.of(context);
-  messenger.hideCurrentSnackBar();
-  messenger.showSnackBar(
-    SnackBar(
-      
-
-      content: const Text('Added to cart'),
-      action: SnackBarAction(
-        
-        label: 'View cart',
-        onPressed: () {
-          Navigator.of(context).pushNamed(
-            AppRoutes.cart,
-            arguments: CartArgs(
-              cartProvider: context.read<CartProvider>(),
-            ),
-          );
-        },
-      ),
-    ),
+  showAppSnackBar(
+    context,
+    message: 'Added to cart',
+    actionLabel: 'View cart',
+    onAction: () {
+      Navigator.of(context).pushNamed(
+        AppRoutes.cart,
+        arguments: CartArgs(
+          cartProvider: context.read<CartProvider>(),
+        ),
+      );
+    },
   );
 }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../styles/app_colors.dart';
+import 'app_shimmer.dart';
 
 class AppNetworkImage extends StatelessWidget {
   const AppNetworkImage({
@@ -45,9 +46,7 @@ class AppNetworkImage extends StatelessWidget {
           fadeInDuration: const Duration(milliseconds: 250),
           fadeInCurve: Curves.easeOut,
           fadeOutDuration: const Duration(milliseconds: 100),
-          placeholder: (_, __) => const Center(
-            child: CircularProgressIndicator(strokeWidth: 2),
-          ),
+          placeholder: (_, __) => const _ImageShimmerPlaceholder(),
           errorWidget: (_, __, ___) => _fallback(errorIcon),
         );
       },
@@ -59,6 +58,19 @@ class AppNetworkImage extends StatelessWidget {
       color: AppColors.muted,
       alignment: Alignment.center,
       child: Icon(icon, size: 40.r, color: AppColors.textSecondary),
+    );
+  }
+}
+
+class _ImageShimmerPlaceholder extends StatelessWidget {
+  const _ImageShimmerPlaceholder();
+
+  @override
+  Widget build(BuildContext context) {
+    return AppShimmer(
+      child: Container(
+        color: AppColors.shimmerBase,
+      ),
     );
   }
 }

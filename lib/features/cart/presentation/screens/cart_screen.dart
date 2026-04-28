@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../app_router.dart';
 import '../../../products/presentation/provider/cart_provider.dart';
 import '../../../../core/extensions/price_extensions.dart';
 import '../../../../core/styles/app_colors.dart';
@@ -15,7 +16,13 @@ class CartScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Your Cart')),
+      appBar: AppBar(
+        title: const Text('Your Cart'),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios_new_rounded),
+          onPressed: () => _handleBack(context),
+        ),
+      ),
       body: Consumer<CartProvider>(
         builder: (context, cart, _) {
           if (cart.items.isEmpty) {
@@ -71,6 +78,14 @@ class CartScreen extends StatelessWidget {
         },
       ),
     );
+  }
+
+  void _handleBack(BuildContext context) {
+    if (Navigator.of(context).canPop()) {
+      Navigator.of(context).pop();
+      return;
+    }
+    Navigator.of(context).pushReplacementNamed(AppRoutes.products);
   }
 }
 
