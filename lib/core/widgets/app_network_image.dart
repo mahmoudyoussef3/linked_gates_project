@@ -46,8 +46,8 @@ class AppNetworkImage extends StatelessWidget {
           fadeInDuration: const Duration(milliseconds: 250),
           fadeInCurve: Curves.easeOut,
           fadeOutDuration: const Duration(milliseconds: 100),
-          placeholder: (_, __) => const _ImageShimmerPlaceholder(),
-          errorWidget: (_, __, ___) => _fallback(errorIcon),
+          placeholder: (_, _) => const _ImageShimmerPlaceholder(),
+          errorWidget: (_, _, _) => _fallback(errorIcon),
         );
       },
     );

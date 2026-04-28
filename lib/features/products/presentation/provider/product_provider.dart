@@ -1,8 +1,8 @@
 import 'dart:collection';
 
 import 'package:flutter/foundation.dart';
+import 'package:linked_gates_project/core/error/exceptions.dart';
 
-import '../../../../core/error/failures.dart';
 import '../../../../core/extensions/price_extensions.dart';
 import '../../../../core/utils/fake_data_helper.dart';
 import '../../../cart/domain/entities/cart_size.dart';
@@ -44,7 +44,7 @@ class ProductProvider extends ChangeNotifier {
       _products = result;
       _warmPresentationData();
       _status = ProductStatus.success;
-    } on Failure catch (error) {
+    } on AppException catch (error) {
       _status = ProductStatus.error;
       _errorMessage = error.message;
     } catch (_) {

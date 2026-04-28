@@ -15,7 +15,7 @@ class ProductRemoteDataSourceImpl implements ProductRemoteDataSource {
     try {
       return await _apiService.getProducts();
     } on DioException catch (error) {
-      throw ServerException.fromDio(error);
+      throw AppException.fromDio(error);
     }
   }
 }

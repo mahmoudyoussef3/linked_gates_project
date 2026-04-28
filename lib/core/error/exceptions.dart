@@ -1,18 +1,17 @@
 import 'package:dio/dio.dart';
 
-class ServerException implements Exception {
-  const ServerException(this.message);
-
+class AppException implements Exception {
   final String message;
 
-  factory ServerException.fromDio(DioException error) {
-    final statusCode = error.response?.statusCode;
-    final statusMessage = error.response?.statusMessage;
-    final message =
-        statusMessage ?? error.message ?? 'Unexpected error occurred';
-    if (statusCode != null) {
-      return ServerException('Request failed ($statusCode): $message');
-    }
-    return ServerException(message);
+  const AppException(this.message);
+
+  factory AppException.fromDio(DioException e) {
+    return AppException(
+      e.response?.data?['message'] ??
+      e.message ??
+      'Something went wrong',
+    );
   }
+
+
 }

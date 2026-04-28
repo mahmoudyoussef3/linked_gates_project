@@ -130,7 +130,9 @@ class ProductSizeSelector extends StatelessWidget {
               child: Text(
                 size.name.toUpperCase(),
                 style: AppTextStyles.subtitle.copyWith(
-                  color: isSelected ? AppColors.primary : AppColors.textSecondary,
+                  color: isSelected
+                      ? AppColors.primary
+                      : AppColors.textSecondary,
                 ),
               ),
             ),
@@ -149,9 +151,7 @@ void showProductDetailsCartSnackBar(BuildContext context) {
     onAction: () {
       Navigator.of(context).pushNamed(
         AppRoutes.cart,
-        arguments: CartArgs(
-          cartProvider: context.read<CartProvider>(),
-        ),
+        arguments: CartArgs(cartProvider: context.read<CartProvider>()),
       );
     },
   );

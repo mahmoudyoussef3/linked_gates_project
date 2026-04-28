@@ -13,7 +13,7 @@ import 'features/products/domain/entities/product_entity.dart';
 import 'features/products/domain/use_cases/get_products_usecase.dart';
 import 'features/products/presentation/provider/product_provider.dart';
 import 'features/cart/presentation/screens/cart_screen.dart';
-import 'features/products/presentation/screens/product_details_screen.dart';
+import 'features/product_details/presentation/screens/product_details_screen.dart';
 import 'features/products/presentation/screens/product_list_screen.dart';
 
 class AppRoutes {
@@ -79,8 +79,7 @@ class AppRouter {
                   addItemToCartUseCase: _addItemToCartUseCase,
                   getCartItemsUseCase: _getCartItemsUseCase,
                   getCartTotalsUseCase: _getCartTotalsUseCase,
-                  manageCartItemQuantityUseCase:
-                      _manageCartItemQuantityUseCase,
+                  manageCartItemQuantityUseCase: _manageCartItemQuantityUseCase,
                   removeCartItemUseCase: _removeCartItemUseCase,
                   clearCartUseCase: _clearCartUseCase,
                 ),

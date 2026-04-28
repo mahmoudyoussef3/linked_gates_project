@@ -6,9 +6,9 @@ import '../../../../app_router.dart';
 import '../../../../core/styles/app_text_styles.dart';
 import '../../../../core/widgets/app_network_image.dart';
 import '../../../cart/presentation/provider/cart_provider.dart';
-import '../provider/product_provider.dart';
+import '../../../products/domain/entities/product_entity.dart';
+import '../../../products/presentation/provider/product_provider.dart';
 import '../widgets/product_details_widgets.dart';
-import '../../domain/entities/product_entity.dart';
 
 class ProductDetailScreen extends StatefulWidget {
   const ProductDetailScreen({super.key, required this.product});
