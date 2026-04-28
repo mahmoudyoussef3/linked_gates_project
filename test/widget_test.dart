@@ -10,10 +10,17 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
 
+import 'package:linked_gates_project/features/cart/data/repositories/cart_repository_impl.dart';
+import 'package:linked_gates_project/features/cart/domain/use_cases/add_item_to_cart_usecase.dart';
+import 'package:linked_gates_project/features/cart/domain/use_cases/clear_cart_usecase.dart';
+import 'package:linked_gates_project/features/cart/domain/use_cases/get_cart_items_usecase.dart';
+import 'package:linked_gates_project/features/cart/domain/use_cases/get_cart_totals_usecase.dart';
+import 'package:linked_gates_project/features/cart/domain/use_cases/manage_cart_item_quantity_usecase.dart';
+import 'package:linked_gates_project/features/cart/domain/use_cases/remove_cart_item_usecase.dart';
+import 'package:linked_gates_project/features/cart/presentation/provider/cart_provider.dart';
 import 'package:linked_gates_project/features/products/domain/entities/product_entity.dart';
 import 'package:linked_gates_project/features/products/domain/repositories/product_repository.dart';
 import 'package:linked_gates_project/features/products/domain/use_cases/get_products_usecase.dart';
-import 'package:linked_gates_project/features/products/presentation/provider/cart_provider.dart';
 import 'package:linked_gates_project/features/products/presentation/provider/product_provider.dart';
 import 'package:linked_gates_project/features/products/presentation/screens/product_list_screen.dart';
 
@@ -32,6 +39,17 @@ void main() {
   ) async {
     final repository = FakeProductRepository();
     final useCase = GetProductsUseCase(repository);
+    final cartRepository = CartRepositoryImpl();
+    final cartProvider = CartProvider(
+      addItemToCartUseCase: AddItemToCartUseCase(cartRepository),
+      getCartItemsUseCase: GetCartItemsUseCase(cartRepository),
+      getCartTotalsUseCase: GetCartTotalsUseCase(cartRepository),
+      manageCartItemQuantityUseCase: ManageCartItemQuantityUseCase(
+        cartRepository,
+      ),
+      removeCartItemUseCase: RemoveCartItemUseCase(cartRepository),
+      clearCartUseCase: ClearCartUseCase(cartRepository),
+    );
 
     await tester.pumpWidget(
       ScreenUtilInit(
@@ -41,7 +59,7 @@ void main() {
         builder: (_, __) => MultiProvider(
           providers: [
             ChangeNotifierProvider(create: (_) => ProductProvider(useCase)),
-            ChangeNotifierProvider(create: (_) => CartProvider()),
+            ChangeNotifierProvider.value(value: cartProvider),
           ],
           child: const MaterialApp(home: ProductListScreen()),
         ),
@@ -50,7 +68,7 @@ void main() {
 
     await tester.pumpAndSettle();
 
-    expect(find.text('Products'), findsOneWidget);
+    expect(find.text('Linked Gates'), findsOneWidget);
     expect(find.text('Test Product'), findsOneWidget);
   });
 }

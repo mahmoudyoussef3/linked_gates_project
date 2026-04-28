@@ -1,8 +1,15 @@
 import 'package:get_it/get_it.dart';
-import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import '../../app_router.dart';
+import '../../features/cart/data/repositories/cart_repository_impl.dart';
+import '../../features/cart/domain/repositories/cart_repository.dart';
+import '../../features/cart/domain/use_cases/add_item_to_cart_usecase.dart';
+import '../../features/cart/domain/use_cases/clear_cart_usecase.dart';
+import '../../features/cart/domain/use_cases/get_cart_items_usecase.dart';
+import '../../features/cart/domain/use_cases/get_cart_totals_usecase.dart';
+import '../../features/cart/domain/use_cases/manage_cart_item_quantity_usecase.dart';
+import '../../features/cart/domain/use_cases/remove_cart_item_usecase.dart';
 import '../../features/products/data/data_sources/product_local_data_source.dart';
 import '../../features/products/data/data_sources/product_local_data_source_impl.dart';
 import '../../features/products/data/data_sources/product_api_service.dart';
@@ -39,7 +46,34 @@ Future<void> setupLocator() async {
   getIt.registerLazySingleton<GetProductsUseCase>(
     () => GetProductsUseCase(getIt<ProductRepository>()),
   );
+  getIt.registerLazySingleton<CartRepository>(() => CartRepositoryImpl());
+  getIt.registerLazySingleton<AddItemToCartUseCase>(
+    () => AddItemToCartUseCase(getIt<CartRepository>()),
+  );
+  getIt.registerLazySingleton<GetCartItemsUseCase>(
+    () => GetCartItemsUseCase(getIt<CartRepository>()),
+  );
+  getIt.registerLazySingleton<GetCartTotalsUseCase>(
+    () => GetCartTotalsUseCase(getIt<CartRepository>()),
+  );
+  getIt.registerLazySingleton<ManageCartItemQuantityUseCase>(
+    () => ManageCartItemQuantityUseCase(getIt<CartRepository>()),
+  );
+  getIt.registerLazySingleton<RemoveCartItemUseCase>(
+    () => RemoveCartItemUseCase(getIt<CartRepository>()),
+  );
+  getIt.registerLazySingleton<ClearCartUseCase>(
+    () => ClearCartUseCase(getIt<CartRepository>()),
+  );
   getIt.registerFactory<AppRouter>(
-    () => AppRouter(getIt<GetProductsUseCase>()),
+    () => AppRouter(
+      getIt<GetProductsUseCase>(),
+      addItemToCartUseCase: getIt<AddItemToCartUseCase>(),
+      getCartItemsUseCase: getIt<GetCartItemsUseCase>(),
+      getCartTotalsUseCase: getIt<GetCartTotalsUseCase>(),
+      manageCartItemQuantityUseCase: getIt<ManageCartItemQuantityUseCase>(),
+      removeCartItemUseCase: getIt<RemoveCartItemUseCase>(),
+      clearCartUseCase: getIt<ClearCartUseCase>(),
+    ),
   );
 }

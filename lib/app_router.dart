@@ -2,9 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'core/widgets/app_message_view.dart';
+import 'features/cart/domain/use_cases/add_item_to_cart_usecase.dart';
+import 'features/cart/domain/use_cases/clear_cart_usecase.dart';
+import 'features/cart/domain/use_cases/get_cart_items_usecase.dart';
+import 'features/cart/domain/use_cases/get_cart_totals_usecase.dart';
+import 'features/cart/domain/use_cases/manage_cart_item_quantity_usecase.dart';
+import 'features/cart/domain/use_cases/remove_cart_item_usecase.dart';
+import 'features/cart/presentation/provider/cart_provider.dart';
 import 'features/products/domain/entities/product_entity.dart';
 import 'features/products/domain/use_cases/get_products_usecase.dart';
-import 'features/products/presentation/provider/cart_provider.dart';
 import 'features/products/presentation/provider/product_provider.dart';
 import 'features/cart/presentation/screens/cart_screen.dart';
 import 'features/products/presentation/screens/product_details_screen.dart';
@@ -35,9 +41,28 @@ class CartArgs {
 }
 
 class AppRouter {
-  AppRouter(this._getProductsUseCase);
+  AppRouter(
+    this._getProductsUseCase, {
+    required AddItemToCartUseCase addItemToCartUseCase,
+    required GetCartItemsUseCase getCartItemsUseCase,
+    required GetCartTotalsUseCase getCartTotalsUseCase,
+    required ManageCartItemQuantityUseCase manageCartItemQuantityUseCase,
+    required RemoveCartItemUseCase removeCartItemUseCase,
+    required ClearCartUseCase clearCartUseCase,
+  }) : _addItemToCartUseCase = addItemToCartUseCase,
+       _getCartItemsUseCase = getCartItemsUseCase,
+       _getCartTotalsUseCase = getCartTotalsUseCase,
+       _manageCartItemQuantityUseCase = manageCartItemQuantityUseCase,
+       _removeCartItemUseCase = removeCartItemUseCase,
+       _clearCartUseCase = clearCartUseCase;
 
   final GetProductsUseCase _getProductsUseCase;
+  final AddItemToCartUseCase _addItemToCartUseCase;
+  final GetCartItemsUseCase _getCartItemsUseCase;
+  final GetCartTotalsUseCase _getCartTotalsUseCase;
+  final ManageCartItemQuantityUseCase _manageCartItemQuantityUseCase;
+  final RemoveCartItemUseCase _removeCartItemUseCase;
+  final ClearCartUseCase _clearCartUseCase;
 
   Route<dynamic> onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -49,7 +74,17 @@ class AppRouter {
               ChangeNotifierProvider(
                 create: (_) => ProductProvider(_getProductsUseCase),
               ),
-              ChangeNotifierProvider(create: (_) => CartProvider()),
+              ChangeNotifierProvider(
+                create: (_) => CartProvider(
+                  addItemToCartUseCase: _addItemToCartUseCase,
+                  getCartItemsUseCase: _getCartItemsUseCase,
+                  getCartTotalsUseCase: _getCartTotalsUseCase,
+                  manageCartItemQuantityUseCase:
+                      _manageCartItemQuantityUseCase,
+                  removeCartItemUseCase: _removeCartItemUseCase,
+                  clearCartUseCase: _clearCartUseCase,
+                ),
+              ),
             ],
             child: const ProductListScreen(),
           ),

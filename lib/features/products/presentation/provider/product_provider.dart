@@ -5,14 +5,13 @@ import 'package:flutter/foundation.dart';
 import '../../../../core/error/failures.dart';
 import '../../../../core/extensions/price_extensions.dart';
 import '../../../../core/utils/fake_data_helper.dart';
+import '../../../cart/domain/entities/cart_size.dart';
 import '../../domain/entities/product_entity.dart';
 import '../../domain/use_cases/get_products_usecase.dart';
 
 enum ProductStatus { initial, loading, success, error }
 
 enum ProductLayout { grid, list }
-
-enum ProductSize { s, m, l }
 
 class ProductProvider extends ChangeNotifier {
   ProductProvider(this._getProductsUseCase);
@@ -26,7 +25,7 @@ class ProductProvider extends ChangeNotifier {
   final Map<int, int> _quantities = <int, int>{};
   final Map<int, double> _displayPrices = <int, double>{};
   final Map<int, String> _descriptions = <int, String>{};
-  final Map<int, ProductSize> _sizes = <int, ProductSize>{};
+  final Map<int, CartSize> _sizes = <int, CartSize>{};
   ProductLayout _layout = ProductLayout.grid;
 
   ProductStatus get status => _status;
@@ -82,21 +81,20 @@ class ProductProvider extends ChangeNotifier {
 
   int getQuantity(int productId) => _quantities[productId] ?? 1;
 
-  ProductSize getSelectedSize(int productId) =>
-      _sizes[productId] ?? ProductSize.m;
+  CartSize getSelectedSize(int productId) => _sizes[productId] ?? CartSize.m;
 
-  void setSelectedSize(int productId, ProductSize size) {
+  void setSelectedSize(int productId, CartSize size) {
     _sizes[productId] = size;
     notifyListeners();
   }
 
-  String sizeLabel(ProductSize size) {
+  String sizeLabel(CartSize size) {
     switch (size) {
-      case ProductSize.s:
+      case CartSize.s:
         return 'S';
-      case ProductSize.m:
+      case CartSize.m:
         return 'M';
-      case ProductSize.l:
+      case CartSize.l:
         return 'L';
     }
   }
@@ -150,7 +148,7 @@ class ProductProvider extends ChangeNotifier {
   void _warmPresentationData() {
     for (final product in _products) {
       _quantities.putIfAbsent(product.id, () => 1);
-      _sizes.putIfAbsent(product.id, () => ProductSize.m);
+      _sizes.putIfAbsent(product.id, () => CartSize.m);
       _displayPrices.putIfAbsent(
         product.id,
         () => FakeDataHelper.resolvePrice(

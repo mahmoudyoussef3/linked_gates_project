@@ -4,8 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../core/styles/app_colors.dart';
 import '../../../../core/styles/app_text_styles.dart';
 import '../../../../core/widgets/app_network_image.dart';
+import '../../../cart/domain/entities/cart_size.dart';
 import '../../domain/entities/product_entity.dart';
-import '../provider/product_provider.dart';
 import 'product_grid_item.dart';
 
 class ProductListItem extends StatelessWidget {
@@ -28,13 +28,13 @@ class ProductListItem extends StatelessWidget {
   final bool isFavorite;
   final String priceText;
   final String description;
-  final ProductSize selectedSize;
+  final CartSize selectedSize;
   final int quantity;
   final VoidCallback? onTap;
   final VoidCallback? onFavoriteTap;
   final VoidCallback? onIncrease;
   final VoidCallback? onDecrease;
-  final ValueChanged<ProductSize>? onSizeSelected;
+  final ValueChanged<CartSize>? onSizeSelected;
 
   @override
   Widget build(BuildContext context) {
@@ -124,13 +124,13 @@ class _SizeSelector extends StatelessWidget {
     this.onSelected,
   });
 
-  final ProductSize selectedSize;
-  final ValueChanged<ProductSize>? onSelected;
+  final CartSize selectedSize;
+  final ValueChanged<CartSize>? onSelected;
 
   @override
   Widget build(BuildContext context) {
     return Row(
-      children: ProductSize.values.map((size) {
+      children: CartSize.values.map((size) {
         final isSelected = size == selectedSize;
         return Padding(
           padding: EdgeInsets.only(right: 6.w),
