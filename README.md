@@ -6,7 +6,7 @@
 
 ## Media Preview
 
-### Demo Video (Mobile / iOS)
+### Demo Video (Android & iOS)
 
 Single combined record of the main flow (Products → Product Details → Cart):
 
@@ -18,7 +18,7 @@ Single combined record of the main flow (Products → Product Details → Cart):
   <a href="screen_reocords/ios_android_record.mov">Open / Download recording</a>
 </div>
 
-### Screenshots (All screens)
+### Screenshots ( Android & IOS All screens)
 
 <table>
   <tr>
@@ -251,11 +251,7 @@ flutter run
 flutter analyze
 ```
 
-### Run Tests
 
-```bash
-flutter test
-```
 
 ## Code Generation
 
@@ -294,25 +290,3 @@ dart run flutter_launcher_icons
 ## Media
 
 Screenshots and the demo recording are shown at the top of this README.
-
-## Why This Submission Is Strong
-
-This project demonstrates more than basic screen building. It shows:
-
-- Structured Flutter architecture
-- Reusable and maintainable UI composition
-- Separation of responsibilities across layers
-- Responsive design decisions
-- Clear room for future enhancements such as persistence, authentication, and checkout
-
-## Possible Future Enhancements
-
-- Persist cart and favorites locally
-- Add search, filtering, and category support
-- Add unit and widget test coverage for more flows
-- Implement checkout flow
-- Add offline handling and retry states
-
-## License
-
-This repository is intended for assessment and demonstration purposes unless a separate license is added.
