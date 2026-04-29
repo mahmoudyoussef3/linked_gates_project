@@ -12,7 +12,7 @@ Single combined record of the main flow (Products → Product Details → Cart):
 
 <p align="center">
   <a href="https://drive.google.com/file/d/1NEeQ4Efk9IqXocW80BbSaVEHSvhWSlW5/view?usp=sharing">
-    <img src="https://img.youtube.com/vi/dQw4w9WgXcQ/0.jpg" width="420" alt="Watch Demo Video"/>
+    <img src="screenshots/watch.png" width="420" alt="Watch Demo Video"/>
   </a>
 </p>
 
@@ -21,21 +21,25 @@ Single combined record of the main flow (Products → Product Details → Cart):
     ▶️ Open / Watch recording
   </a>
 </p>
-### Screenshots ( Android & IOS All screens)
+
+---
+
+### 📱 Screenshots (Android & iOS – All Screens)
 
 <table>
   <tr>
     <td align="center" width="50%">
-      <img src="screenshots/products_grid.png" alt="Products - Grid" width="420" />
+      <img src="screenshots/products_grid.png" alt="Products Grid" width="420" />
       <br />
       <b>Products</b> (Grid)
     </td>
     <td align="center" width="50%">
-      <img src="screenshots/products_list.png" alt="Products - List" width="420" />
+      <img src="screenshots/products_list.png" alt="Products List" width="420" />
       <br />
       <b>Products</b> (List)
     </td>
   </tr>
+
   <tr>
     <td align="center" width="50%">
       <img src="screenshots/prod_details.png" alt="Product Details" width="420" />
