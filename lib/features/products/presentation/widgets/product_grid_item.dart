@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../core/styles/app_colors.dart';
-import '../../../../core/styles/app_text_styles.dart';
-import '../../../../core/widgets/app_network_image.dart';
 import '../../domain/entities/product_entity.dart';
+import 'product_grid_image_section.dart';
+import 'product_grid_info_section.dart';
 
 class ProductGridItem extends StatefulWidget {
   const ProductGridItem({
@@ -83,6 +83,7 @@ class _ProductGridItemState extends State<ProductGridItem>
 
   @override
   Widget build(BuildContext context) {
+    final cardRadius = BorderRadius.circular(16.r);
     return FadeTransition(
       opacity: _fade,
       child: SlideTransition(
@@ -90,105 +91,34 @@ class _ProductGridItemState extends State<ProductGridItem>
         child: ScaleTransition(
           scale: _scale,
           child: RepaintBoundary(
-            child: Material(
-              color: AppColors.surface,
-              elevation: 3,
-              shadowColor: Colors.black.withValues(alpha: 0.08),
-              borderRadius: BorderRadius.circular(16.r),
-              child: InkWell(
-                onTap: widget.onTap,
-                borderRadius: BorderRadius.circular(16.r),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      child: Hero(
-                        tag: 'product_${widget.product.id}',
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.vertical(
-                            top: Radius.circular(16.r),
-                          ),
-                          child: Stack(
-                            fit: StackFit.expand,
-                            children: [
-                              AppNetworkImage(url: widget.product.imageUrl),
-                              Positioned(
-                                top: 10.h,
-                                right: 10.w,
-                                child: FavoriteButton(
-                                  isFavorite: widget.isFavorite,
-                                  onTap: widget.onFavoriteTap,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
+            child: Semantics(
+              button: true,
+              label: '${widget.product.title}, ${widget.priceText}',
+              child: Material(
+                color: AppColors.surface,
+                elevation: 3,
+                shadowColor: Colors.black.withValues(alpha: 0.08),
+                borderRadius: cardRadius,
+                child: InkWell(
+                  onTap: widget.onTap,
+                  borderRadius: cardRadius,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      ProductGridImageSection(
+                        productId: widget.product.id,
+                        imageUrl: widget.product.imageUrl,
+                        isFavorite: widget.isFavorite,
+                        onFavoriteTap: widget.onFavoriteTap,
                       ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(12.w, 12.h, 12.w, 6.h),
-                      child: Text(
-                        widget.product.title,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: AppTextStyles.title,
+                      ProductGridInfoSection(
+                        title: widget.product.title,
+                        priceText: widget.priceText,
                       ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 12.w),
-                      child: Container(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 10.w,
-                          vertical: 6.h,
-                        ),
-                        decoration: BoxDecoration(
-                          color: AppColors.primary.withValues(alpha: 0.08),
-                          borderRadius: BorderRadius.circular(999.r),
-                        ),
-                        child: Text(
-                          widget.priceText,
-                          style: AppTextStyles.price,
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 12.h),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class FavoriteButton extends StatelessWidget {
-  const FavoriteButton({super.key, required this.isFavorite, this.onTap});
-
-  final bool isFavorite;
-  final VoidCallback? onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    final color = isFavorite ? AppColors.error : Colors.white;
-    return Material(
-      color: Colors.black.withValues(alpha: 0.25),
-      shape: const CircleBorder(),
-      child: InkWell(
-        onTap: onTap,
-        customBorder: const CircleBorder(),
-        child: Padding(
-          padding: EdgeInsets.all(6.r),
-          child: AnimatedSwitcher(
-            duration: const Duration(milliseconds: 200),
-            transitionBuilder: (child, animation) =>
-                ScaleTransition(scale: animation, child: child),
-            child: Icon(
-              isFavorite ? Icons.favorite : Icons.favorite_border,
-              key: ValueKey(isFavorite),
-              color: color,
-              size: 18.r,
             ),
           ),
         ),

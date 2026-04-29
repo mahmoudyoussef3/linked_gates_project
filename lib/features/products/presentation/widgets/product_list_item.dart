@@ -6,7 +6,7 @@ import '../../../../core/styles/app_text_styles.dart';
 import '../../../../core/widgets/app_network_image.dart';
 import '../../../cart/domain/entities/cart_size.dart';
 import '../../domain/entities/product_entity.dart';
-import 'product_grid_item.dart';
+import 'favorite_button.dart';
 
 class ProductListItem extends StatelessWidget {
   const ProductListItem({
