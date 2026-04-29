@@ -5,14 +5,11 @@ import 'package:linked_gates_project/core/widgets/functions.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../app_router.dart';
-import '../../../../core/styles/app_text_styles.dart';
-import '../../../../core/widgets/app_message_view.dart';
 import '../../../cart/presentation/provider/cart_provider.dart';
 import '../provider/product_provider.dart';
 import '../widgets/product_list_app_bar_action.dart';
-import '../widgets/products_grid.dart';
-import '../widgets/products_list.dart';
-import '../widgets/product_shimmer.dart';
+import '../widgets/product_list_app_bar_title.dart';
+import '../widgets/product_list_body.dart';
 
 class ProductListScreen extends StatefulWidget {
   const ProductListScreen({super.key});
@@ -50,18 +47,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
           title: Selector<ProductProvider, int>(
             selector: (_, provider) => provider.products.length,
             builder: (context, productsCount, _) {
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text('Linked Gates', style: AppTextStyles.titleLarge),
-                  SizedBox(height: 4.h),
-                  Text(
-                    '$productsCount products available',
-                    style: AppTextStyles.caption,
-                  ),
-                ],
-              );
+              return ProductListAppBarTitle(productsCount: productsCount);
             },
           ),
           actions: [
@@ -101,55 +87,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
         ),
         body: Consumer<ProductProvider>(
           builder: (context, provider, _) {
-            const crossAxisCount = 2;
-            switch (provider.status) {
-              case ProductStatus.initial:
-              case ProductStatus.loading:
-                return ProductShimmerList(
-                  crossAxisCount: crossAxisCount,
-                  layout: provider.layout,
-                );
-              case ProductStatus.error:
-                return AppMessageView(
-                  message: provider.errorMessage ?? 'Failed to load products.',
-                  icon: Icons.error_outline,
-                );
-              case ProductStatus.success:
-                final products = provider.products;
-                if (products.isEmpty) {
-                  return const AppMessageView(
-                    message: 'No products found.',
-                    icon: Icons.inventory_2_outlined,
-                  );
-                }
-                return AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 300),
-                  switchInCurve: Curves.easeOutCubic,
-                  switchOutCurve: Curves.easeInCubic,
-                  transitionBuilder: (child, animation) {
-                    return FadeTransition(
-                      opacity: animation,
-                      child: SlideTransition(
-                        position: Tween<Offset>(
-                          begin: const Offset(0.02, 0),
-                          end: Offset.zero,
-                        ).animate(animation),
-                        child: child,
-                      ),
-                    );
-                  },
-                  child: provider.layout == ProductLayout.grid
-                      ? ProductsGrid(
-                          key: const ValueKey('grid'),
-                          products: products,
-                          crossAxisCount: crossAxisCount,
-                        )
-                      : ProductsList(
-                          key: const ValueKey('list'),
-                          products: products,
-                        ),
-                );
-            }
+            return ProductListBody(provider: provider);
           },
         ),
       ),
