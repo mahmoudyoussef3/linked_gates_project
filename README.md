@@ -1,6 +1,34 @@
 # Linked Gates Project
 
-A polished Flutter shopping application built to demonstrate clean structure, strong UI composition, and a complete mini-commerce journey from product discovery to cart review.
+<p align="center">
+  <img src="android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png" alt="Linked Gates App Icon" width="110" />
+</p>
+
+## Demo Video (Mobile / iOS)
+
+Single combined record of the main flow (Products → Product Details → Cart):
+
+<div align="center">
+  <video src="screen_reocords/ios_android_record.mov" controls preload="metadata" width="360"></video>
+</div>
+
+[Open / download recording](screen_reocords/ios_android_record.mov)
+
+## Screenshots
+
+### Products — Grid
+![Products - Grid](screenshots/products_grid.png)
+
+### Products — List
+![Products - List](screenshots/products_list.png)
+
+### Product Details
+![Product Details](screenshots/prod_details.png)
+
+### Cart
+![Cart](screenshots/cart.png)
+
+---
 
 The current flow covers three core screens:
 
@@ -244,97 +272,9 @@ Regenerate icons with:
 dart run flutter_launcher_icons
 ```
 
-## Screenshots
+## Media
 
-Add polished screenshots for each screen before submitting the project. A clean approach is to save media under a `docs/media/` folder and keep the filenames consistent.
-
-Recommended screenshot paths:
-
-- `docs/media/screens/products-grid.png`
-- `docs/media/screens/products-list.png`
-- `docs/media/screens/product-details.png`
-- `docs/media/screens/cart.png`
-
-### Products Screen - Grid Layout
-
-Suggested caption: product catalog in grid mode with visual browsing and favorite actions.
-
-```md
-![Products Screen - Grid](docs/media/screens/products-grid.png)
-```
-
-### Products Screen - List Layout
-
-Suggested caption: list mode with richer item details, size selection, and quick quantity controls.
-
-```md
-![Products Screen - List](docs/media/screens/products-list.png)
-```
-
-### Product Details Screen
-
-Suggested caption: detailed product view with quantity selector, size options, and add-to-cart action.
-
-```md
-![Product Details Screen](docs/media/screens/product-details.png)
-```
-
-### Cart Screen
-
-Suggested caption: cart summary with editable quantities and live total price.
-
-```md
-![Cart Screen](docs/media/screens/cart.png)
-```
-
-## Demo Videos
-
-For a professional submission, include one short demo for Android and one for iOS showing the full flow:
-
-1. Open app
-2. Browse products
-3. Switch between grid and list layouts
-4. Open product details
-5. Change size and quantity
-6. Add item to cart
-7. Review cart and update totals
-
-Recommended video paths:
-
-- `docs/media/videos/android-demo.mp4`
-- `docs/media/videos/ios-demo.mp4`
-
-### Direct Video Links
-
-After recording the demos, add direct links like this:
-
-```md
-[Android Demo Video](docs/media/videos/android-demo.mp4)
-[iOS Demo Video](docs/media/videos/ios-demo.mp4)
-```
-
-### Inline Video Preview
-
-If the platform rendering your README supports HTML, you can also present the demos more professionally with inline video players:
-
-```html
-<h4>Android Demo</h4>
-<video src="docs/media/videos/android-demo.mp4" controls width="320"></video>
-
-<h4>iOS Demo</h4>
-<video src="docs/media/videos/ios-demo.mp4" controls width="320"></video>
-```
-
-### Recommended Submission Setup
-
-For the cleanest company-facing README:
-
-- Add screenshots for each major screen
-- Add one Android walkthrough video
-- Add one iOS walkthrough video
-- Keep each video short, clear, and focused on the main user flow
-
-If the repository platform does not render inline videos well, keep the screenshot gallery in the README and place the video links directly below it.
+Screenshots and the demo recording are shown at the top of this README.
 
 ## Why This Submission Is Strong
 
