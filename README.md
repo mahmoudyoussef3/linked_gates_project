@@ -10,14 +10,17 @@
 
 Single combined record of the main flow (Products → Product Details → Cart):
 
-<div align="center">
-  <video src="screen_reocords/ios_android_record.mov" controls preload="metadata" width="420"></video>
-</div>
+<p align="center">
+  <a href="https://drive.google.com/file/d/1NEeQ4Efk9IqXocW80BbSaVEHSvhWSlW5/view?usp=sharing">
+    <img src="https://img.youtube.com/vi/dQw4w9WgXcQ/0.jpg" width="420" alt="Watch Demo Video"/>
+  </a>
+</p>
 
-<div align="center">
-  <a href="screen_reocords/ios_android_record.mov">Open / Download recording</a>
-</div>
-
+<p align="center">
+  <a href="https://drive.google.com/file/d/1NEeQ4Efk9IqXocW80BbSaVEHSvhWSlW5/view?usp=sharing">
+    ▶️ Open / Watch recording
+  </a>
+</p>
 ### Screenshots ( Android & IOS All screens)
 
 <table>
