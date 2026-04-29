@@ -23,44 +23,31 @@ import '../network/dio_client.dart';
 final GetIt getIt = GetIt.instance;
 
 Future<void> setupLocator() async {
-  /// =====================
-  /// NETWORK
-  /// =====================
+
   getIt.registerLazySingleton<DioClient>(() => DioClient());
 
-  /// =====================
-  /// API SERVICE
-  /// =====================
+
   getIt.registerLazySingleton<ProductApiService>(
     () => ProductApiService(getIt<DioClient>().dio),
   );
 
-  /// =====================
-  /// DATA SOURCES
-  /// =====================
+
   getIt.registerLazySingleton<ProductRemoteDataSource>(
     () => ProductRemoteDataSourceImpl(getIt<ProductApiService>()),
   );
 
-  /// =====================
-  /// REPOSITORIES
-  /// =====================
   getIt.registerLazySingleton<ProductRepository>(
     () => ProductRepositoryImpl(getIt<ProductRemoteDataSource>()),
   );
 
   getIt.registerLazySingleton<CartRepository>(() => CartRepositoryImpl());
 
-  /// =====================
-  /// USE CASES (PRODUCTS)
-  /// =====================
+
   getIt.registerLazySingleton<GetProductsUseCase>(
     () => GetProductsUseCase(getIt<ProductRepository>()),
   );
 
-  /// =====================
-  /// USE CASES (CART)
-  /// =====================
+
   getIt.registerLazySingleton<AddItemToCartUseCase>(
     () => AddItemToCartUseCase(getIt<CartRepository>()),
   );
@@ -85,9 +72,7 @@ Future<void> setupLocator() async {
     () => ClearCartUseCase(getIt<CartRepository>()),
   );
 
-  /// =====================
-  /// ROUTER
-  /// =====================
+
   getIt.registerFactory<AppRouter>(
     () => AppRouter(
       getIt<GetProductsUseCase>(),

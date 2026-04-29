@@ -142,7 +142,7 @@ class AppRouter {
       settings: settings,
       transitionDuration: const Duration(milliseconds: 320),
       reverseTransitionDuration: const Duration(milliseconds: 260),
-      pageBuilder: (_, __, ___) => page,
+      pageBuilder: (_, _, _) => page,
       transitionsBuilder: (_, animation, secondaryAnimation, child) {
         final offsetTween = Tween<Offset>(
           begin: const Offset(0.08, 0),

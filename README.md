@@ -1,164 +1,232 @@
 # Linked Gates Project
 
-A production-style Flutter shopping app focused on a clean architecture flow:
-**Products (Home)** -> **Product Details** -> **Cart**.
+A polished Flutter shopping application built to demonstrate clean structure, strong UI composition, and a complete mini-commerce journey from product discovery to cart review.
 
-The app includes:
-- Network-first product loading with local caching fallback
-- Responsive UI with grid/list product layouts
-- Product details with size and quantity selection
-- Cart management with live totals
-- Native splash screen and launcher icon support for Android and iOS
+The current flow covers three core screens:
 
----
+- `Products` screen with grid/list layouts
+- `Product Details` screen with size and quantity selection
+- `Cart` screen with quantity updates and total calculation
 
-## Features
+## Overview
 
-- **Products home screen**
-  - Grid/List toggle
-  - Favorites state
-  - Cart badge in app bar
-  - Double-back exit feedback (toast)
-- **Product details**
-  - Hero image transition
-  - Inline quantity counter
-  - Size selection
-  - Add-to-cart flow with styled snackbar CTA
-- **Cart**
-  - Quantity controls
-  - Item removal
-  - Total price calculation
-- **UX polish**
-  - Shimmer placeholders (instead of spinners)
-  - Custom transitions between screens
-  - Centralized color and typography system
+This project is designed as a practical technical assessment app rather than a large production commerce platform. The focus is on code organization, user experience, reusable widgets, and maintainable architecture.
 
----
+The app fetches products from a remote API, presents them in a responsive catalog, allows the user to inspect product details, and supports adding items to an in-memory cart with live pricing updates.
 
-## Tech Stack
+## Key Highlights
 
-- **Framework:** Flutter (Material 3)
-- **State Management:** Provider (`ChangeNotifier`, `Selector`, `Consumer`)
-- **Dependency Injection:** GetIt
-- **Networking:** Dio + Retrofit
-- **Persistence:** Hive / Hive Flutter
-- **UI Utilities:** Flutter ScreenUtil, Cached Network Image, Shimmer, Fluttertoast
-- **Code Generation:** build_runner, json_serializable, retrofit_generator
-- **Assets Tooling:** flutter_native_splash, flutter_launcher_icons
+- Clean feature-based structure with separation between `data`, `domain`, and `presentation`
+- `Provider`-based state management with targeted rebuilds using `Consumer` and `Selector`
+- Dependency injection with `GetIt`
+- API integration using `Dio` and `Retrofit`
+- Responsive sizing with `flutter_screenutil`
+- Smooth UX touches such as shimmer loading, animated product cards, hero transitions, and toasts
+- Android and iOS app branding support through splash and launcher icon tooling
 
----
+## User Journey
+
+### 1. Products Screen
+
+The home screen is the main entry point of the app. It loads products from the API and gives the user two ways to browse the catalog:
+
+- Grid layout for a more visual shopping experience
+- List layout for richer item information, including size and quantity quick controls
+- Favorite toggling for product cards
+- Cart badge in the app bar showing the current number of items
+- Double-back press exit feedback on Android
+
+### 2. Product Details Screen
+
+Selecting a product opens a detailed view where the user can:
+
+- View a larger product image with transition animation
+- Read the product title and description
+- Adjust quantity
+- Choose a size
+- See the calculated total price before adding to cart
+- Add the selected configuration to the cart
+
+### 3. Cart Screen
+
+The cart screen provides a simple review experience:
+
+- List of selected items
+- Quantity increase/decrease actions
+- Item removal behavior
+- Live total price updates
+- Checkout button placeholder for future expansion
+
+## Architecture
+
+The project follows a feature-first, layered approach.
+
+### Presentation Layer
+
+Handles UI rendering and state interaction:
+
+- Screens live under each feature's `presentation/screens`
+- Reusable UI sections live under `presentation/widgets`
+- State is managed with `ChangeNotifier` providers
+
+### Domain Layer
+
+Contains the business-facing contracts and use cases:
+
+- Entities represent the app's core models
+- Repository abstractions define feature behavior
+- Use cases expose focused actions such as getting products or modifying cart state
+
+### Data Layer
+
+Handles implementation details:
+
+- Retrofit service for API communication
+- Remote data source for network operations
+- Repository implementations that map raw data into domain entities
+
+## Technical Stack
+
+- `Flutter` for cross-platform UI
+- `Provider` for state management
+- `GetIt` for dependency injection
+- `Dio` + `Retrofit` for REST API communication
+- `json_serializable` for model serialization
+- `cached_network_image` for remote image loading
+- `shimmer` for loading placeholders
+- `flutter_screenutil` for responsive sizing
+- `device_preview` for screen simulation during development
+- `fluttertoast` for lightweight user feedback
+
+## API Source
+
+Products are loaded from:
+
+- `https://api.escuelajs.co/api/v1/products`
+
+The base URL is configured in `lib/core/utils/constants.dart`.
+
+## Routing
+
+Named routes are defined in `lib/app_router.dart`:
+
+- `/products`
+- `/products/details`
+- `/cart`
+
+The router also handles:
+
+- Provider injection for each route
+- Route argument validation
+- Custom fade/slide transitions for secondary screens
 
 ## Project Structure
 
 ```text
 lib/
   core/
-    di/                 # service locator and dependency wiring
-    error/              # exceptions/failures
-    network/            # Dio client
-    styles/             # app theme, colors, text styles
-    utils/              # constants, helpers
-    widgets/            # shared UI widgets (snackbar, shimmer, image, etc.)
+    di/                 # dependency injection setup
+    error/              # app-level exception handling
+    extensions/         # shared extensions such as price formatting
+    network/            # Dio client configuration
+    styles/             # colors, typography, theme
+    utils/              # constants and UI data helpers
+    widgets/            # reusable shared widgets
   features/
     products/
-      data/             # models, data sources, repository implementation
-      domain/           # entities, repository contract, use cases
-      presentation/     # screens, providers, UI widgets
+      data/             # API service, data sources, models, repositories
+      domain/           # entities, repositories, use cases
+      presentation/     # providers, screens, widgets
+    product_details/
+      presentation/     # details screen composition widgets
     cart/
-      presentation/     # cart screen
-  app_router.dart       # named routes + transitions + provider injection
-  main.dart             # app entrypoint
+      data/             # cart repository implementation
+      domain/           # cart entities, contracts, use cases
+      presentation/     # cart provider, screen, widgets
+  app_router.dart       # app routing and transitions
+  main.dart             # application entry point
 ```
 
----
+## State Management Summary
 
-## Architecture Overview
+### `ProductProvider`
 
-The project follows a practical layered style inside features:
+Responsible for:
 
-- **Data layer**
-  - Calls remote API through Retrofit (`ProductApiService`)
-  - Reads/writes local cache with Hive
-  - Implements repository contract
-- **Domain layer**
-  - Defines entities and use-cases (e.g. `GetProductsUseCase`)
-- **Presentation layer**
-  - Uses Providers for UI state and business interaction
-  - Screens consume state via `Selector`/`Consumer` for efficient rebuilds
+- Fetching products
+- Managing loading and error states
+- Switching between grid and list layouts
+- Handling local favorite state
+- Managing selected size and quantity per product
+- Preparing display-friendly product descriptions and prices
 
-### Data Flow (Products)
-1. UI triggers `ProductProvider.loadProducts()`
-2. Use case requests products from repository
-3. Repository checks local cache (with TTL)
-4. If cache is stale/missing, fetches from API and caches result
-5. Provider exposes mapped state to UI
+### `CartProvider`
 
----
+Responsible for:
 
-## Routing
+- Adding items to the cart
+- Updating item quantity
+- Removing items
+- Clearing the cart
+- Exposing cart totals for UI updates
 
-Defined in `lib/app_router.dart`:
+## Current Implementation Notes
 
-- `/products` (home)
-- `/products/details`
-- `/cart`
+- The cart is currently stored in memory through `CartRepositoryImpl`
+- Product data is fetched remotely each app session
+- Checkout is intentionally left as a future enhancement
+- Favorites are UI state only and are not persisted
 
-The router also:
-- Validates route arguments
-- Injects required providers per route
-- Applies custom fade + slide page transitions
-
----
-
-## Getting Started
+## Running the Project
 
 ### Prerequisites
 
-- Flutter SDK (stable)
-- Dart SDK (bundled with Flutter)
-- Xcode (for iOS builds on macOS)
-- Android Studio / Android SDK (for Android builds)
+- Flutter SDK (stable channel)
+- Dart SDK
+- Android Studio or Android SDK
+- Xcode for iOS builds on macOS
 
-### Installation
+### Install Dependencies
 
 ```bash
 flutter pub get
 ```
 
-### Run the app
+### Run the Application
 
 ```bash
 flutter run
 ```
 
-### Run tests
-
-```bash
-flutter test
-```
-
-### Static analysis
+### Analyze the Project
 
 ```bash
 flutter analyze
 ```
 
----
+### Run Tests
+
+```bash
+flutter test
+```
 
 ## Code Generation
 
 This project uses generated files for Retrofit and JSON serialization.
-When models or API interfaces change, run:
+
+Run generation with:
 
 ```bash
 dart run build_runner build --delete-conflicting-outputs
 ```
 
----
+## App Branding
 
-## Native Splash
+### Splash Screen
 
-Configuration file: `flutter_native_splash.yaml`
+Configuration file:
+
+- `flutter_native_splash.yaml`
 
 Regenerate splash assets:
 
@@ -166,41 +234,126 @@ Regenerate splash assets:
 dart run flutter_native_splash:create
 ```
 
----
+### Launcher Icons
 
-## Launcher Icons
+Launcher icon configuration is defined in `pubspec.yaml`.
 
-Configured in `pubspec.yaml` under `flutter_launcher_icons`.
-
-Regenerate icons for Android + iOS:
+Regenerate icons with:
 
 ```bash
 dart run flutter_launcher_icons
 ```
 
----
+## Screenshots
 
-## Design System Notes
+Add polished screenshots for each screen before submitting the project. A clean approach is to save media under a `docs/media/` folder and keep the filenames consistent.
 
-- Colors: `lib/core/styles/app_colors.dart`
-- Typography: `lib/core/styles/app_text_styles.dart`
-- Theme: `lib/core/styles/app_theme.dart`
-- Reusable feedback/snackbar: `lib/core/widgets/app_snackbar.dart`
-- Reusable image with shimmer placeholder: `lib/core/widgets/app_network_image.dart`
+Recommended screenshot paths:
 
----
+- `docs/media/screens/products-grid.png`
+- `docs/media/screens/products-list.png`
+- `docs/media/screens/product-details.png`
+- `docs/media/screens/cart.png`
 
-## Current Scope
+### Products Screen - Grid Layout
 
-This app intentionally focuses on three core screens:
-- Products (Home)
-- Product Details
-- Cart
+Suggested caption: product catalog in grid mode with visual browsing and favorite actions.
 
-It is a strong base for adding authentication, checkout/payment, order history, and profile flows later.
+```md
+![Products Screen - Grid](docs/media/screens/products-grid.png)
+```
 
----
+### Products Screen - List Layout
+
+Suggested caption: list mode with richer item details, size selection, and quick quantity controls.
+
+```md
+![Products Screen - List](docs/media/screens/products-list.png)
+```
+
+### Product Details Screen
+
+Suggested caption: detailed product view with quantity selector, size options, and add-to-cart action.
+
+```md
+![Product Details Screen](docs/media/screens/product-details.png)
+```
+
+### Cart Screen
+
+Suggested caption: cart summary with editable quantities and live total price.
+
+```md
+![Cart Screen](docs/media/screens/cart.png)
+```
+
+## Demo Videos
+
+For a professional submission, include one short demo for Android and one for iOS showing the full flow:
+
+1. Open app
+2. Browse products
+3. Switch between grid and list layouts
+4. Open product details
+5. Change size and quantity
+6. Add item to cart
+7. Review cart and update totals
+
+Recommended video paths:
+
+- `docs/media/videos/android-demo.mp4`
+- `docs/media/videos/ios-demo.mp4`
+
+### Direct Video Links
+
+After recording the demos, add direct links like this:
+
+```md
+[Android Demo Video](docs/media/videos/android-demo.mp4)
+[iOS Demo Video](docs/media/videos/ios-demo.mp4)
+```
+
+### Inline Video Preview
+
+If the platform rendering your README supports HTML, you can also present the demos more professionally with inline video players:
+
+```html
+<h4>Android Demo</h4>
+<video src="docs/media/videos/android-demo.mp4" controls width="320"></video>
+
+<h4>iOS Demo</h4>
+<video src="docs/media/videos/ios-demo.mp4" controls width="320"></video>
+```
+
+### Recommended Submission Setup
+
+For the cleanest company-facing README:
+
+- Add screenshots for each major screen
+- Add one Android walkthrough video
+- Add one iOS walkthrough video
+- Keep each video short, clear, and focused on the main user flow
+
+If the repository platform does not render inline videos well, keep the screenshot gallery in the README and place the video links directly below it.
+
+## Why This Submission Is Strong
+
+This project demonstrates more than basic screen building. It shows:
+
+- Structured Flutter architecture
+- Reusable and maintainable UI composition
+- Separation of responsibilities across layers
+- Responsive design decisions
+- Clear room for future enhancements such as persistence, authentication, and checkout
+
+## Possible Future Enhancements
+
+- Persist cart and favorites locally
+- Add search, filtering, and category support
+- Add unit and widget test coverage for more flows
+- Implement checkout flow
+- Add offline handling and retry states
 
 ## License
 
-This project is private/internal unless you choose to add an open-source license.
+This repository is intended for assessment and demonstration purposes unless a separate license is added.
