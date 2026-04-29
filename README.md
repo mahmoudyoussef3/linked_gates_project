@@ -4,29 +4,48 @@
   <img src="android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png" alt="Linked Gates App Icon" width="110" />
 </p>
 
-## Demo Video (Mobile / iOS)
+## Media Preview
+
+### Demo Video (Mobile / iOS)
 
 Single combined record of the main flow (Products → Product Details → Cart):
 
 <div align="center">
-  <video src="screen_reocords/ios_android_record.mov" controls preload="metadata" width="360"></video>
+  <video src="screen_reocords/ios_android_record.mov" controls preload="metadata" width="420"></video>
 </div>
 
-[Open / download recording](screen_reocords/ios_android_record.mov)
+<div align="center">
+  <a href="screen_reocords/ios_android_record.mov">Open / Download recording</a>
+</div>
 
-## Screenshots
+### Screenshots (All screens)
 
-### Products — Grid
-![Products - Grid](screenshots/products_grid.png)
-
-### Products — List
-![Products - List](screenshots/products_list.png)
-
-### Product Details
-![Product Details](screenshots/prod_details.png)
-
-### Cart
-![Cart](screenshots/cart.png)
+<table>
+  <tr>
+    <td align="center" width="50%">
+      <img src="screenshots/products_grid.png" alt="Products - Grid" width="420" />
+      <br />
+      <b>Products</b> (Grid)
+    </td>
+    <td align="center" width="50%">
+      <img src="screenshots/products_list.png" alt="Products - List" width="420" />
+      <br />
+      <b>Products</b> (List)
+    </td>
+  </tr>
+  <tr>
+    <td align="center" width="50%">
+      <img src="screenshots/prod_details.png" alt="Product Details" width="420" />
+      <br />
+      <b>Product Details</b>
+    </td>
+    <td align="center" width="50%">
+      <img src="screenshots/cart.png" alt="Cart" width="420" />
+      <br />
+      <b>Cart</b>
+    </td>
+  </tr>
+</table>
 
 ---
 
