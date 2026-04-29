@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:linked_gates_project/features/product_details/presentation/widgets/product_details_body.dart';
 import 'package:provider/provider.dart';
-
 import '../../../cart/presentation/provider/cart_provider.dart';
 import '../../../products/domain/entities/product_entity.dart';
 import '../../../products/presentation/provider/product_provider.dart';
-
 import '../widgets/product_app_bar.dart';
 
 class ProductDetailScreen extends StatelessWidget {
